@@ -8,9 +8,12 @@ import com.daniel.agendadortarefas.infrastructure.enums.Status;
 import com.daniel.agendadortarefas.infrastructure.repository.TarefasRepository;
 import com.daniel.agendadortarefas.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +32,22 @@ public class TarefasService {
 
         return tarefasConverter.paraTarefaDTO(tarefasRepository.save(tarefasEntity));
     }
+
+    public List<TarefasDTO> buscaTarefasPorPeriodo(LocalDateTime dataInicial, LocalDateTime dataFinal){
+        return tarefasConverter.paraListaTarefasDTO(tarefasRepository.findByDataEventoBetween(dataInicial, dataFinal));
+
+    }
+
+    public List<TarefasDTO> buscaTarefasPorEmail(String token){
+        String email = jwtUtil.extraitEmailToken(token.substring(7));
+        List<TarefasEntity> listaTarefas = tarefasRepository.findByEmailUsuario(email);
+
+        return tarefasConverter.paraListaTarefasDTO(listaTarefas);
+    }
+
+
+
+
 
 
 }
