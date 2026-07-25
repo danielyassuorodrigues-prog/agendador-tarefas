@@ -37,7 +37,7 @@ public class TarefasService {
     }
 
     public List<TarefasDTO> buscaTarefasPorPeriodo(LocalDateTime dataInicial, LocalDateTime dataFinal){
-        return tarefasConverter.paraListaTarefasDTO(tarefasRepository.findByDataEventoBetween(dataInicial, dataFinal));
+        return tarefasConverter.paraListaTarefasDTO(tarefasRepository.findByDataEventoBetweenAndStatus(dataInicial, dataFinal, Status.PENDENTE ));
 
     }
 
@@ -77,7 +77,9 @@ public class TarefasService {
         } catch (ResourcesNotFoundException e) {
             throw new ResourcesNotFoundException("Erro ao alterar os dados da tarefa " + e.getCause());
         }
+
     }
+
 
 
 
